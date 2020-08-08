@@ -30,6 +30,7 @@ namespace cfg
 		CFG_DECLARE_REF_GETTER_OF(GetName, _name)
 		CFG_DECLARE_REF_GETTER_OF(GetType, _type_value)
 
+		CFG_DECLARE_REF_GETTER_OF(GetAuthentication, _authentication)
 		CFG_DECLARE_REF_GETTER_OF(GetOrigin, _origin)
 		CFG_DECLARE_REF_GETTER_OF(GetDecode, _decode)
 		CFG_DECLARE_REF_GETTER_OF(GetEncodeList, _encodes.GetEncodeList())
@@ -89,6 +90,7 @@ namespace cfg
 				return true;
 			});
 
+			RegisterValue<Optional>("Authentication", &_authentication);
 			RegisterValue<Optional>("Origin", &_origin);
 			RegisterValue<Optional>("Decode", &_decode);
 			RegisterValue<Optional>("Encodes", &_encodes);
@@ -101,6 +103,7 @@ namespace cfg
 		ov::String _type;
 		ApplicationType _type_value;
 
+		ov::String _authentication;
 		Origin _origin;
 		Decode _decode;
 		Encodes _encodes;

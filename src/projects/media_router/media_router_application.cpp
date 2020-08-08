@@ -178,6 +178,9 @@ bool MediaRouteApplication::OnCreateStream(
 		return false;
 	}
 
+	// stream_info->SetName("stream");
+	logti("THIS STREAM IS %s", stream_info->GetName().CStr());
+
 	auto connector_type = app_conn->GetConnectorType();
 
 	// If there is same stream, reuse that

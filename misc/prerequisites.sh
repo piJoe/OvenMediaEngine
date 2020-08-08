@@ -51,6 +51,21 @@ install_openssl()
     sudo rm -rf ${PREFIX}/bin) || fail_exit "openssl"
 }
 
+install_libcurl()
+{
+    DOWNLOAD_URL="https://curl.haxx.se/download/curl-7.71.1.tar.gz"
+
+    (DIR=${TEMP_PATH}/libcurl && \
+    mkdir -p ${DIR} && \
+    cd ${DIR} && \
+    curl -sLf "${DOWNLOAD_URL}" | tar -xz --strip-components=1 && \
+    ./configure --prefix="${PREFIX}" --without-ssl && \
+    make && \
+    sudo make install && \
+    rm -rf ${DIR} && \
+    sudo rm -rf ${PREFIX}/bin) || fail_exit "libcurl"
+}
+
 install_libsrtp()
 {
     (DIR=${TEMP_PATH}/srtp && \
@@ -304,6 +319,7 @@ fi
 
 install_nasm
 install_openssl
+install_libcurl
 install_libsrtp
 install_libsrt
 install_libopus

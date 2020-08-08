@@ -38,6 +38,18 @@ RUN \
         rm -rf ${DIR} && \
         rm -rf ${PREFIX}/bin
 
+## Build libcurl
+RUN \
+    DIR=${TEMP_PATH}/libcurl && \
+    mkdir -p ${DIR} && \
+    cd ${DIR} && \
+    curl -sLf "https://curl.haxx.se/download/curl-7.71.1.tar.gz" | tar -xz --strip-components=1 && \
+    ./configure --prefix="${PREFIX}" --without-ssl && \
+    make && \
+    make install && \
+    rm -rf ${DIR} && \
+    rm -rf ${PREFIX}/bin
+
 ## Build SRTP
 RUN \
         DIR=/tmp/srtp && \
@@ -152,12 +164,11 @@ RUN \
         rm -rf ${DIR}
 
 ## Build OvenMediaEngine
+COPY ./ /tmp/ome
 RUN \
-        DIR=/tmp/ome && \
-        mkdir -p ${DIR} && \
-        cd ${DIR} && \
-        curl -sLf https://github.com/AirenSoft/OvenMediaEngine/archive/${OME_VERSION}.tar.gz | tar -xz --strip-components=1 && \
+        cd /tmp/ome && \
         cd src && \
+        rm -rf intermediates && \
         make release
 
 ## Make running environment

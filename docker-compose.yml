@@ -1,10 +1,8 @@
-version: '3.7'
+version: '3.4'
 
 services:
   origin:
-    build:
-      context: .
-    image: airensoft/ovenmediaengine:latest
+    image: ome-auth
     ports:
     - "1935:1935/tcp"
     - "3333:3333/tcp"
@@ -20,20 +18,22 @@ services:
     - OME_SIGNALLING_PORT=3333
     - OME_MPEGTS_PROV_PORT=4000-4005/udp
     - OME_ICE_CANDIDATES=*:10006-10010/udp
+    - DEFAULT_ORIGIN_SERVER=192.168.0.222
+    network_mode: host
     command: /opt/ovenmediaengine/bin/OvenMediaEngine -c origin_conf
 
-  edge:
-    build:
-      context: .
-    image: airensoft/ovenmediaengine:latest
-    ports:
-    - "3334:3334/tcp"
-    - "8090:8090/tcp"
-    - "10000-10005:10000-10005/udp"
-    environment:
-    - DEFAULT_ORIGIN_SERVER=192.168.0.199
-    - OME_HLS_STREAM_PORT=8090
-    - OME_DASH_STREAM_PORT=8090
-    - OME_SIGNALLING_PORT=3334
-    - OME_ICE_CANDIDATES=*:10000-10005/udp
-    command: /opt/ovenmediaengine/bin/OvenMediaEngine -c edge_conf
+  # edge:
+  #   build:
+  #     context: .
+  #   image: airensoft/ovenmediaengine:latest
+  #   ports:
+  #   - "3334:3334/tcp"
+  #   - "8090:8090/tcp"
+  #   - "10000-10005:10000-10005/udp"
+  #   environment:
+  #   - DEFAULT_ORIGIN_SERVER=192.168.0.199
+  #   - OME_HLS_STREAM_PORT=8090
+  #   - OME_DASH_STREAM_PORT=8090
+  #   - OME_SIGNALLING_PORT=3334
+  #   - OME_ICE_CANDIDATES=*:10000-10005/udp
+  #   command: /opt/ovenmediaengine/bin/OvenMediaEngine -c edge_conf
