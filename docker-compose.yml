@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   origin:
-    image: ome-auth
+    image: pijoe/ome-auth:latest
     ports:
     - "1935:1935/tcp"
     - "3333:3333/tcp"
@@ -19,8 +19,10 @@ services:
     - OME_MPEGTS_PROV_PORT=4000-4005/udp
     - OME_ICE_CANDIDATES=*:10006-10010/udp
     - DEFAULT_ORIGIN_SERVER=192.168.0.222
+    volumes:
+    - ./conf/:/var/conf
     network_mode: host
-    command: /opt/ovenmediaengine/bin/OvenMediaEngine -c origin_conf
+    command: /opt/ovenmediaengine/bin/OvenMediaEngine -c /var/conf
 
   # edge:
   #   build:
