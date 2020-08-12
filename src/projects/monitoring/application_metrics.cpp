@@ -53,6 +53,8 @@ namespace mon
 
         _streams[stream.GetId()] = stream_metrics;
 
+        //@todo(pj): add metric logging STREAM STARTED (http post?)
+
         logti("Create StreamMetrics(%s) for monitoring", stream.GetName().CStr());
         return true;
     }
@@ -64,6 +66,8 @@ namespace mon
         {
             return false;
         }
+
+        //@todo(pj): add metric logging STREAM ENDED (http post?)
 
         logti("Delete StreamMetrics(%s) for monitoring", stream.GetName().CStr());
 
