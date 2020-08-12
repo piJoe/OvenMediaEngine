@@ -33,7 +33,8 @@ LOCAL_STATIC_LIBRARIES := \
 	monitoring \
 	jsoncpp \
 	sqlite \
-	aac
+	aac \
+	curling
 
 # rtsp_provider 
 

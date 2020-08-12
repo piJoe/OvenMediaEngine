@@ -5,6 +5,7 @@
 #include "monitoring_private.h"
 #include "application_metrics.h"
 #include "host_metrics.h"
+#include <curling/curling.h>
 
 namespace mon
 {
@@ -54,6 +55,7 @@ namespace mon
         _streams[stream.GetId()] = stream_metrics;
 
         //@todo(pj): add metric logging STREAM STARTED (http post?)
+        logti("==================================== Logging to CURLING: http://logger/%s/state/online", stream.GetName().CStr());
 
         logti("Create StreamMetrics(%s) for monitoring", stream.GetName().CStr());
         return true;
@@ -68,6 +70,7 @@ namespace mon
         }
 
         //@todo(pj): add metric logging STREAM ENDED (http post?)
+        logti("==================================== Logging to CURLING: http://logger/%s/state/offline", stream.GetName().CStr());
 
         logti("Delete StreamMetrics(%s) for monitoring", stream.GetName().CStr());
 

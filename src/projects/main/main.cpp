@@ -8,6 +8,8 @@
 //==============================================================================
 #include "main.h"
 
+#include <curling/curling.h>
+
 #include <base/ovlibrary/daemon.h>
 #include <base/ovlibrary/log_write.h>
 #include <config/config_manager.h>
@@ -92,6 +94,8 @@ int main(int argc, char *argv[])
 	ParseOption parse_option;
 
 	auto result = Initialize(argc, argv, &parse_option);
+
+	Curling::init();
 
 	if (result == ov::Daemon::State::PARENT_SUCCESS)
 	{
