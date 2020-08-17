@@ -13,19 +13,18 @@
 			<RTMP>
 				<Port>1935</Port>
 			</RTMP>
-			<MPEGTS>
-				<!--
-					Listen on port 4000~4005
-					This is just a demonstration to show that you can configure the port in several ways
-				-->
-				<Port>4000-4004,4005/udp</Port>
-			</MPEGTS>
 		</Providers>
 
 		<Publishers>
 			<OVT>
 				<Port>9000</Port>
 			</OVT>
+			<HLS>
+				<Port>8081</Port>
+			</HLS>
+			<DASH>
+				<Port>8081</Port>
+			</DASH>
 			<WebRTC>
 				<Signalling>
 					<Port>3333</Port>
@@ -33,18 +32,11 @@
 					<!-- <TLSPort>3334</TLSPort> -->
 				</Signalling>
 				<IceCandidates>
-					<IceCandidate>*:10000-10005/udp</IceCandidate>
+					<IceCandidate>192.168.0.222:10000-10005/udp</IceCandidate>
 				</IceCandidates>
 			</WebRTC>
 		</Publishers>
 	</Bind>
-
-	<!-- P2P works only in WebRTC -->
-	<!--
-	<P2P>
-		<MaxClientPeersPerHostPeer>2</MaxClientPeersPerHostPeer>
-	</P2P>
-	-->
 
 	<VirtualHosts>
 		<!-- You can use wildcard like this to include multiple XMLs -->
@@ -103,7 +95,8 @@
 					<Name>app</Name>
 					<!-- Application type (live/vod) -->
 					<Type>live</Type>
-					<!-- <Authentication>http://localhost:8081</Authentication> -->
+					<Authentication>http://webserver-local/auth</Authentication>
+					<Metrics>http://webserver-local/metrics</Metrics>
 					<Encodes>
 						<Encode>
 							<Name>bypass</Name>
@@ -123,6 +116,22 @@
 								<Channel>2</Channel>
 							</Audio>
 						</Encode>
+						<Encode>
+							<Name>HD_H264_AAC</Name>
+							<Audio>
+								<Codec>aac</Codec>
+								<Bitrate>128000</Bitrate>
+								<Samplerate>48000</Samplerate>
+								<Channel>2</Channel>
+							</Audio>
+							<Video>
+								<Codec>h264</Codec>
+								<Width>1280</Width>
+								<Height>720</Height>
+								<Bitrate>2000000</Bitrate>
+								<Framerate>30.0</Framerate>
+							</Video>
+						</Encode>
 					</Encodes>
 					<Streams>
 						<Stream>
@@ -130,28 +139,13 @@
 							<Profiles>
 								<Profile>bypass</Profile>
 								<Profile>opus</Profile>
+								<Profile>HD_H264_AAC</Profile>
 							</Profiles>
 						</Stream>
 					</Streams>
 					<Providers>
 						<OVT />
 						<RTMP />
-						<MPEGTS>
-							<StreamMap>
-								<!--
-									Set the stream name of the client connected to the port to "stream_${Port}"
-									For example, if a client connets to port 4000, OME creates a "stream_4000" stream
-								-->
-								<Stream>
-									<Name>stream_${Port}</Name>
-									<Port>4000,4001-4004</Port>
-								</Stream>
-								<Stream>
-									<Name>stream_4005</Name>
-									<Port>4005</Port>
-								</Stream>
-							</StreamMap>
-						</MPEGTS>
 						<RTSPPull />
 					</Providers>
 					<Publishers>

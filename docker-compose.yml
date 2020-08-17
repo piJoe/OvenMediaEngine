@@ -4,6 +4,7 @@ services:
   origin:
     image: pijoe/ome-auth:latest
     ports:
+    - "8081:8081"
     - "1935:1935/tcp"
     - "3333:3333/tcp"
     - "9000:9000/tcp"

@@ -31,6 +31,7 @@ namespace cfg
 		CFG_DECLARE_REF_GETTER_OF(GetType, _type_value)
 
 		CFG_DECLARE_REF_GETTER_OF(GetAuthentication, _authentication)
+		CFG_DECLARE_REF_GETTER_OF(GetMetrics, _metrics)
 		CFG_DECLARE_REF_GETTER_OF(GetOrigin, _origin)
 		CFG_DECLARE_REF_GETTER_OF(GetDecode, _decode)
 		CFG_DECLARE_REF_GETTER_OF(GetEncodeList, _encodes.GetEncodeList())
@@ -91,6 +92,7 @@ namespace cfg
 			});
 
 			RegisterValue<Optional>("Authentication", &_authentication);
+			RegisterValue<Optional>("Metrics", &_metrics);
 			RegisterValue<Optional>("Origin", &_origin);
 			RegisterValue<Optional>("Decode", &_decode);
 			RegisterValue<Optional>("Encodes", &_encodes);
@@ -104,6 +106,7 @@ namespace cfg
 		ApplicationType _type_value;
 
 		ov::String _authentication;
+		ov::String _metrics;
 		Origin _origin;
 		Decode _decode;
 		Encodes _encodes;

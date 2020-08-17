@@ -5,6 +5,7 @@
 #include "stream_metrics.h"
 #include "application_metrics.h"
 #include "monitoring_private.h"
+#include <curling/curling.h>
 
 namespace mon
 {
@@ -115,7 +116,15 @@ namespace mon
 			GetApplicationMetrics()->OnSessionConnected(type);
 
 			//@todo(pj): add metric logging VIEWER COUNT (http post?)
-			logti("==================================== Logging to CURLING: http://logger/%s/viewers/%u", GetName().CStr(), GetTotalConnections());
+			ov::String metricsUrl = GetApplicationInfo().GetConfig().GetMetrics();
+			if (metricsUrl.GetLength() > 0) {
+				std::string escaped_streamname = Curling::escape(GetName().CStr());
+				std::string get_url = ov::String::FormatString("%s/%s/viewers/%u", metricsUrl.CStr(), escaped_streamname.c_str(), GetTotalConnections()).CStr();
+
+				logti("==================================== Logging to CURLING: %s", get_url.c_str());
+				Curling::get(get_url.c_str(), nullptr, nullptr);
+			}
+
 
 			logti("A new session has started playing %s/%s on the %s publihser. %s(%u)/Stream total(%u)/App total(%u)", 
 					GetApplicationInfo().GetName().CStr(), GetName().CStr(), 
@@ -143,7 +152,14 @@ namespace mon
 			GetApplicationMetrics()->OnSessionDisconnected(type);
 
 			//@todo(pj): add metric logging VIEWER COUNT (http post?)
-			logti("==================================== Logging to CURLING: http://logger/%s/viewers/%u", GetName().CStr(), GetTotalConnections());
+			ov::String metricsUrl = GetApplicationInfo().GetConfig().GetMetrics();
+			if (metricsUrl.GetLength() > 0) {
+				std::string escaped_streamname = Curling::escape(GetName().CStr());
+				std::string get_url = ov::String::FormatString("%s/%s/viewers/%u", metricsUrl.CStr(), escaped_streamname.c_str(), GetTotalConnections()).CStr();
+
+				logti("==================================== Logging to CURLING: %s", get_url.c_str());
+				Curling::get(get_url.c_str(), nullptr, nullptr);
+			}
 
 			logti("A session has been stopped playing %s/%s on the %s publihser. Concurrent Viewers[%s(%u)/Stream total(%u)/App total(%u)]", 
 					GetApplicationInfo().GetName().CStr(), GetName().CStr(), 

@@ -54,8 +54,16 @@ namespace mon
 
         _streams[stream.GetId()] = stream_metrics;
 
-        //@todo(pj): add metric logging STREAM STARTED (http post?)
-        logti("==================================== Logging to CURLING: http://logger/%s/state/online", stream.GetName().CStr());
+        //@todo(pj): add metric logging STREAM STARTED (http post?)   )
+        ov::String metricsUrl = stream.GetApplicationInfo().GetConfig().GetMetrics();
+        if (metricsUrl.GetLength() > 0) {
+            std::string escaped_streamname = Curling::escape(stream.GetName().CStr());
+            std::string get_url = ov::String::FormatString("%s/%s/state/1", metricsUrl.CStr(), escaped_streamname.c_str()).CStr();
+
+            logti("==================================== Logging to CURLING: %s", get_url.c_str());
+            Curling::get(get_url.c_str(), nullptr, nullptr);
+        }
+        
 
         logti("Create StreamMetrics(%s) for monitoring", stream.GetName().CStr());
         return true;
@@ -70,7 +78,14 @@ namespace mon
         }
 
         //@todo(pj): add metric logging STREAM ENDED (http post?)
-        logti("==================================== Logging to CURLING: http://logger/%s/state/offline", stream.GetName().CStr());
+        ov::String metricsUrl = stream.GetApplicationInfo().GetConfig().GetMetrics();
+        if (metricsUrl.GetLength() > 0) {
+            std::string escaped_streamname = Curling::escape(stream.GetName().CStr());
+            std::string get_url = ov::String::FormatString("%s/%s/state/0", metricsUrl.CStr(), escaped_streamname.c_str()).CStr();
+
+            logti("==================================== Logging to CURLING: %s", get_url.c_str());
+            Curling::get(get_url.c_str(), nullptr, nullptr);
+        }
 
         logti("Delete StreamMetrics(%s) for monitoring", stream.GetName().CStr());
 
